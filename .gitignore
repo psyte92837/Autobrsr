@@ -1,4 +1,7 @@
-node_modules/
-failed-step-*.png
-screenshot-*.png
-.env
+.gradle/
+build/
+local.properties
+*.iml
+.idea/
+captures/
+.kotlin/

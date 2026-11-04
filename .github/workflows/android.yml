@@ -1,0 +1,44 @@
+name: Сборка APK
+
+on:
+  push:
+    branches: [main, master, "claude/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Сборка
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleRelease --no-daemon --stacktrace
+          cp app/build/outputs/apk/release/app-release.apk autobrsr.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: autobrsr-apk
+          path: autobrsr.apk
+
+      # Последняя сборка всегда доступна по ссылке releases/latest-build
+      - name: Публикация релиза
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest-build --yes --cleanup-tag || true
+          gh release create latest-build autobrsr.apk \
+            --title "Автобраузер (сборка ${{ github.run_number }})" \
+            --notes "Ветка ${{ github.ref_name }}, коммит ${{ github.sha }}. Скачайте autobrsr.apk и установите на телефон." \
+            --prerelease --target "${{ github.sha }}"
