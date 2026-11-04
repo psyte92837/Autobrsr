@@ -1,0 +1,22 @@
+{
+  "name": "autobrsr",
+  "version": "0.1.0",
+  "description": "AI-автобраузер: говоришь ИИ, что делать в браузере, шаги записываются в сценарий, который потом запускается без ИИ",
+  "type": "module",
+  "bin": {
+    "autobrsr": "src/cli.js"
+  },
+  "scripts": {
+    "record": "node src/cli.js record",
+    "run-scenario": "node src/cli.js run",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.4.0",
+    "playwright": "^1.63.0"
+  }
+}

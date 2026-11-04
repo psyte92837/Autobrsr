@@ -1,0 +1,4 @@
+node_modules/
+failed-step-*.png
+screenshot-*.png
+.env
